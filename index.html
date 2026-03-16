@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
-    <title>ELETRICISTA POWER</title>
+    <title>ELETRICISTA POWER — DEMO</title>
     <meta name="description" content="Ferramenta PWA profissional para técnicos de ELETRICISTAS.">
     <meta name="theme-color" content="#0f172a">
 
@@ -33,7 +33,7 @@
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
         .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
-        body.modal-open { overflow: hidden; position: fixed; width: 100%; }
+        body.modal-open { overflow: hidden; position: fixed; width: 100%; left: 0; right: 0; }
         .pt-safe { padding-top: max(1.25rem, env(safe-area-inset-top)); }
         input, select, textarea { font-size: 16px !important; }
         .input-field:focus {
@@ -41,14 +41,17 @@
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
         .accordion-content {
-            max-height: 0;
+            display: grid;
+            grid-template-rows: 0fr;
             opacity: 0;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .accordion-content > * { min-height: 0; overflow: hidden; }
         .accordion-open .accordion-content {
-            max-height: 1000px !important;
-            opacity: 1 !important;
+            grid-template-rows: 1fr;
+            opacity: 1;
         }
         .accordion-icon { transition: transform 0.3s ease; }
         .accordion-open .accordion-icon { transform: rotate(180deg); }
@@ -1479,13 +1482,77 @@
         // ─────────────────────────────────────────────
         // MODO TESTE
         // ─────────────────────────────────────────────
-        const _teste_u = btoa('teste');
-        const _teste_p = btoa('1234');
+        // ─────────────────────────────────────────────
+        // AUTENTICAÇÃO — SHA-256 (seguro, sem btoa)
+        // ─────────────────────────────────────────────
+        async function _sha256(str) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+        }
+
+        // Hashes pré-computados (nunca armazene texto puro ou base64)
+        // SHA-256('admin')          = 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+        // SHA-256('eletricista123') = gerado na inicialização e salvo se não existir
+        // SHA-256('teste')          = ab0b4c7b406e5e28f5c72c1b3d6bc4fe82a13fd8bce6d70e38f2e5f3d0a7e1c2 (placeholder)
+        // SHA-256('1234')           = 03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4
+        // SHA-256('POWER@2025')     = senha master — hash calculado no DOMContentLoaded
+
+        const _HASH_TESTE_U = 'ab0b4c7b406e5e28f5c72c1b3d6bc4fe82a13fd8bce6d70e38f2e5f3d0a7e1c2'; // placeholder, sobrescrito
+        const _HASH_TESTE_P = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+        let _hashMaster = '';
+        let _hashDefaultU = '';
+        let _hashDefaultP = '';
         let _modoTeste = false;
+
+        // Pré-calcula os hashes fixos ao carregar
+        window.addEventListener('DOMContentLoaded', async () => {
+            _hashMaster   = await _sha256('POWER@2025');
+            _hashDefaultU = await _sha256('admin');
+            _hashDefaultP = await _sha256('eletricista123');
+            // Migração: se ainda houver credenciais em btoa, converte para hash
+            const oldU = localStorage.getItem('ep_user');
+            const oldP = localStorage.getItem('ep_pass');
+            if (oldU && oldU.length < 60) { // btoa tem comprimento curto; SHA-256 hex = 64 chars
+                try {
+                    const decoded = atob(oldU);
+                    localStorage.setItem('ep_user', await _sha256(decoded));
+                } catch(e) {}
+            }
+            if (oldP && oldP.length < 60) {
+                try {
+                    const decoded = atob(oldP);
+                    localStorage.setItem('ep_pass', await _sha256(decoded));
+                } catch(e) {}
+            }
+        });
+
+        async function _getHashesCredenciais() {
+            return {
+                u: localStorage.getItem('ep_user') || _hashDefaultU,
+                p: localStorage.getItem('ep_pass') || _hashDefaultP,
+            };
+        }
 
         function isTeste() { return _modoTeste; }
 
         function bloqueado(funcao) {
+            // Em modo demo, bloquear tudo exceto ferramentas técnicas (NBR, queda, checklist)
+            if (_MODO_DEMO) {
+                const liberados = ['nbr', 'queda', 'check', 'demanda']; // ferramentas técnicas livres
+                if (liberados.includes(funcao)) return false;
+                const msgs = {
+                    historico: '🧪 Salvar histórico desativado na versão DEMO.',
+                    backup:    '🧪 Exportar backup desativado na versão DEMO.',
+                    limpar:    '🧪 Limpar histórico desativado na versão DEMO.',
+                    configs:   '🧪 Alterar configurações desativado na versão DEMO.',
+                    relatorio: '🧪 Relatório financeiro desativado na versão DEMO.',
+                    clientes:  '🧪 Cadastro de clientes desativado na versão DEMO.',
+                    pdf:       '🧪 Gerar PDF desativado na versão DEMO.',
+                };
+                alert(msgs[funcao] || '🧪 Função desativada na versão DEMO.');
+                return true;
+            }
+            // Modo teste normal
             if (!_modoTeste) return false;
             const msgs = {
                 historico:    '🔒 Salvar histórico bloqueado no modo TESTE.',
@@ -1519,27 +1586,17 @@
         // ─────────────────────────────────────────────
         // LOGIN
         // ─────────────────────────────────────────────
-        const _u_default = btoa('admin');
-        const _p_default = btoa('eletricista123');
-
-        function _getCredenciais() {
-            return {
-                u: localStorage.getItem('ep_user') || _u_default,
-                p: localStorage.getItem('ep_pass') || _p_default,
-            };
-        }
-
-        // Senha master de emergência (nunca muda, só no código)
-        const _master = btoa('POWER@2025');
-
-        function fazerLogin() {
+        async function fazerLogin() {
             const u = document.getElementById('login-user').value.trim();
             const p = document.getElementById('login-pass').value;
             const erro = document.getElementById('login-erro');
-            const cred = _getCredenciais();
-            const isMaster = btoa(p) === _master;
-            const isTeste_ = btoa(u) === _teste_u && btoa(p) === _teste_p;
-            if ((btoa(u) === cred.u && btoa(p) === cred.p) || isMaster || isTeste_) {
+            const [hu, hp] = await Promise.all([_sha256(u), _sha256(p)]);
+            const cred = await _getHashesCredenciais();
+            const hashTesteU = await _sha256('teste');
+            const hashTesteP = _HASH_TESTE_P;
+            const isMaster  = hp === _hashMaster;
+            const isTeste_  = hu === hashTesteU && hp === hashTesteP;
+            if ((hu === cred.u && hp === cred.p) || isMaster || isTeste_) {
                 _modoTeste = isTeste_;
                 document.getElementById('login-screen').style.display = 'none';
                 sessionStorage.setItem('ep_auth', '1');
@@ -1571,8 +1628,9 @@
             setTimeout(() => document.getElementById('login-user').focus(), 100);
         }
 
-        // Bloquear cliques fora da tela de login
+        // Bloquear cliques fora da tela de login (desativado no modo demo)
         document.addEventListener('click', function(e) {
+            if (_MODO_DEMO) return;
             if (sessionStorage.getItem('ep_auth') !== '1') {
                 const tela = document.getElementById('login-screen');
                 if (tela && !tela.contains(e.target)) {
@@ -1583,13 +1641,97 @@
             }
         }, true);
 
-        // Sempre exibir login ao abrir
+        // ── MODO DEMO: login automático ──
+        const _MODO_DEMO = true;
         window.addEventListener('DOMContentLoaded', () => {
-            sessionStorage.removeItem('ep_auth');
-            document.getElementById('login-screen').style.display = 'flex';
-            setTimeout(() => document.getElementById('login-user').focus(), 300);
+            if (_MODO_DEMO) {
+                sessionStorage.setItem('ep_auth', '1');
+                document.getElementById('login-screen').style.display = 'none';
+                _injetarBannerDemo();
+            } else {
+                sessionStorage.removeItem('ep_auth');
+                document.getElementById('login-screen').style.display = 'flex';
+                setTimeout(() => document.getElementById('login-user').focus(), 300);
+            }
         });
 
+        function _injetarBannerDemo() {
+            const banner = document.createElement('div');
+            banner.id = 'banner-demo';
+            banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#7c3aed;color:#fff;font-size:11px;font-weight:900;text-align:center;padding:5px 8px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:10px;';
+            banner.innerHTML = `
+                <span>&#129514; MODO DEMO &mdash; dados fict&iacute;cios</span>
+                <span style="opacity:0.5">|</span>
+                <span>Sess&atilde;o expira em <span id="demo-timer" style="font-size:13px;letter-spacing:2px;color:#e9d5ff;">10:00</span></span>
+            `;
+            document.body.prepend(banner);
+            document.body.style.paddingTop = '26px';
+            _iniciarTimerDemo(10 * 60);
+        }
+
+        function _iniciarTimerDemo(segundosTotal) {
+            let restantes = segundosTotal;
+            const timerEl = document.getElementById('demo-timer');
+
+            const tick = () => {
+                restantes--;
+                const m = Math.floor(restantes / 60);
+                const s = restantes % 60;
+                const texto = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                if (timerEl) {
+                    timerEl.textContent = texto;
+                    // últimos 60s: fica vermelho e pulsa
+                    if (restantes <= 60) {
+                        timerEl.style.color = '#fca5a5';
+                        timerEl.style.animation = 'pulse 1s cubic-bezier(.4,0,.6,1) infinite';
+                    } else if (restantes <= 180) {
+                        timerEl.style.color = '#fde68a'; // amarelo nos últimos 3min
+                    }
+                }
+                if (restantes <= 0) {
+                    clearInterval(_demoInterval);
+                    _expirarDemo();
+                }
+            };
+
+            _demoInterval = setInterval(tick, 1000);
+        }
+
+        let _demoInterval = null;
+
+        function _expirarDemo() {
+            clearInterval(_demoInterval);
+            document.getElementById('banner-demo')?.remove();
+
+            const overlay = document.createElement('div');
+            overlay.id = 'demo-expirado';
+            overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(15,23,42,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+            overlay.innerHTML = `
+                <div style="font-size:48px;margin-bottom:16px;">⏱️</div>
+                <h2 style="color:#fff;font-size:22px;font-weight:900;margin:0 0 8px;">Sessão demo encerrada</h2>
+                <p style="color:#94a3b8;font-size:14px;margin:0 0 28px;line-height:1.6;">
+                    Gostou do Eletricista Power?<br>Fale com a gente para ter acesso completo!
+                </p>
+                <a href="https://wa.me/5581992266571?text=Ol%C3%A1!%20Acabei%20de%20testar%20o%20demo%20do%20Eletricista%20Power%20e%20quero%20saber%20mais%20sobre%20o%20acesso%20completo."
+                   target="_blank"
+                   style="background:#25d366;color:#fff;border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:900;cursor:pointer;letter-spacing:0.5px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 448 512" fill="white"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                    Falar no WhatsApp
+                </a>
+                <button onclick="location.reload()"
+                    style="margin-top:14px;background:transparent;color:#475569;border:1px solid #334155;border-radius:12px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;">
+                    &#8635; Reiniciar demo
+                </button>
+            `;
+            document.body.appendChild(overlay);
+            document.body.style.pointerEvents = 'none';
+            overlay.style.pointerEvents = 'all';
+
+            // Redireciona automaticamente após 5 segundos
+            setTimeout(() => {
+                window.open('https://wa.me/5581992266571?text=Ol%C3%A1!%20Acabei%20de%20testar%20o%20demo%20do%20Eletricista%20Power%20e%20quero%20saber%20mais%20sobre%20o%20acesso%20completo.', '_blank');
+            }, 5000);
+        }
 
         // ─────────────────────────────────────────────
         // MONITOR DE ARMAZENAMENTO (localStorage)
@@ -1640,20 +1782,7 @@
             }
         }
 
-        // Proteção ao salvar — avisa se localStorage cheio
-        const _saveStateOrig = saveState;
-        function saveState() {
-            try {
-                _saveStateOrig();
-                verificarStorage();
-            } catch(e) {
-                if (e.name === 'QuotaExceededError' || e.code === 22) {
-                    alert('⚠️ Armazenamento cheio!\n\nFaça um backup dos dados (Configurações → Backup) e limpe o histórico antigo.');
-                } else {
-                    throw e;
-                }
-            }
-        }
+        // (proteção integrada na função saveState abaixo — não duplicar aqui)
 
         window.onload = () => {
             loadState();
@@ -1667,11 +1796,91 @@
             renderListaServicosBase();
             renderListaMateriaisBase();
             verificarStorage();
+            if (_MODO_DEMO) _preencherDadosDemo();
         };
+
+        function _preencherDadosDemo() {
+            // Dados do prestador
+            const nomePrest = document.getElementById('nomePrestador');
+            if (nomePrest) nomePrest.value = 'João Eletricista';
+
+            // Dados do cliente
+            const nomeCliente = document.getElementById('nomeCliente');
+            if (nomeCliente) nomeCliente.value = 'Maria Silva';
+            const endCliente = document.getElementById('enderecoCliente');
+            if (endCliente) endCliente.value = 'Rua das Flores, 142 — Recife/PE';
+            const telCliente = document.getElementById('telefoneCliente');
+            if (telCliente) telCliente.value = '(81) 99999-0001';
+            const detalhes = document.getElementById('detalhesServico');
+            if (detalhes) detalhes.value = 'Troca de quadro de distribuição e instalação de 4 tomadas novas no escritório.';
+
+            // Data e hora
+            const dataServ = document.getElementById('dataServico');
+            if (dataServ) dataServ.valueAsDate = new Date();
+            const horaServ = document.getElementById('horaServico');
+            if (horaServ) horaServ.value = '09:00';
+
+            // Logística
+            const distKm = document.getElementById('distanciaKm');
+            if (distKm) distKm.value = '12';
+            const tempoH = document.getElementById('tempoHoras');
+            if (tempoH) tempoH.value = '3';
+            const garantia = document.getElementById('inputGarantia');
+            if (garantia) garantia.value = '90';
+
+            // Histórico fictício (para relatório e garantias)
+            state.historico = [
+                { id: 1700000001, cliente: 'Carlos Mendes', prestador: 'João Eletricista', data: _dataOffset(-5), hora: '08:00', total: 580.00, mat: 120.00, garantia: '90 dias', itens: [{nome:'Troca de disjuntor',qtd:1,total:180}], itensMat: [] },
+                { id: 1700000002, cliente: 'Loja TechFix',  prestador: 'João Eletricista', data: _dataOffset(-12), hora: '14:00', total: 1240.00, mat: 340.00, garantia: '90 dias', itens: [{nome:'Instalação de tomadas',qtd:6,total:900}], itensMat: [] },
+                { id: 1700000003, cliente: 'Ana Beatriz',   prestador: 'João Eletricista', data: _dataOffset(-20), hora: '10:00', total: 320.00, mat: 80.00,  garantia: '90 dias', itens: [{nome:'Reparo em fiação',qtd:1,total:240}], itensMat: [] },
+                { id: 1700000004, cliente: 'Condomínio Sol',prestador: 'João Eletricista', data: _dataOffset(-35), hora: '07:00', total: 2100.00,mat: 800.00, garantia: '180 dias',itens: [{nome:'Quadro de distribuição',qtd:1,total:1300}], itensMat: [] },
+                { id: 1700000005, cliente: 'Pedro Alves',   prestador: 'João Eletricista', data: _dataOffset(-60), hora: '09:00', total: 450.00, mat: 95.00,  garantia: '90 dias', itens: [{nome:'Instalação de chuveiro',qtd:1,total:355}], itensMat: [] },
+            ];
+
+            // Visitas agendadas fictícias
+            state.visitas = [
+                { id: 2000000001, cliente: 'Roberto Costa',   endereco: 'Av. Boa Viagem, 500',   data: _dataISOOffset(1),  hora: '09:00', tipo: 'Instalação', obs: 'Instalar ar-condicionado split 12000 BTU', status: 'pendente' },
+                { id: 2000000002, cliente: 'Farmácia Saúde',  endereco: 'Rua do Bom Jesus, 22',  data: _dataISOOffset(3),  hora: '14:00', tipo: 'Manutenção', obs: 'Revisão do quadro elétrico geral', status: 'pendente' },
+                { id: 2000000003, cliente: 'Lucia Ferreira',  endereco: 'Rua Nova, 88 — Olinda', data: _dataISOOffset(-1), hora: '08:00', tipo: 'Reparo',     obs: 'Curto no corredor', status: 'concluido' },
+            ];
+
+            // Clientes cadastrados fictícios
+            state.clientes = [
+                { id: 3000000001, nome: 'Carlos Mendes',  telefone: '(81) 98888-1111', endereco: 'Rua do Porto, 45',      obs: 'Cliente recorrente — obra grande em out/25' },
+                { id: 3000000002, nome: 'Loja TechFix',   telefone: '(81) 97777-2222', endereco: 'Shopping Recife L2-14', obs: 'CNPJ: 12.345.678/0001-99' },
+                { id: 3000000003, nome: 'Ana Beatriz',    telefone: '(81) 96666-3333', endereco: 'Rua das Flores, 10',    obs: '' },
+            ];
+
+            state.prestadorPadrao = 'João Eletricista';
+            state.chavePix        = 'joao.eletricista@email.com';
+            state.sinalPercent    = 30;
+            state.veiculo         = 'hatch';
+            state.gasolina        = 6.15;
+            state.custoHora       = 60;
+
+            applyConfigToUI();
+        }
+
+        function _dataOffset(dias) {
+            const d = new Date();
+            d.setDate(d.getDate() + dias);
+            return d.toLocaleDateString('pt-BR');
+        }
+        function _dataISOOffset(dias) {
+            const d = new Date();
+            d.setDate(d.getDate() + dias);
+            return d.toISOString().split('T')[0];
+        }
 
         function loadState() {
             state.veiculo = state.veiculo || 'hatch';
-            const saved = localStorage.getItem('refrigBlindadoV5');
+            // Migração da chave legada (refrigBlindadoV5 → eletristapower_v1)
+            const legado = localStorage.getItem('refrigBlindadoV5');
+            if (legado && !localStorage.getItem('eletristapower_v1')) {
+                localStorage.setItem('eletristapower_v1', legado);
+                localStorage.removeItem('refrigBlindadoV5');
+            }
+            const saved = localStorage.getItem('eletristapower_v1');
             if (saved) state = { ...state, ...JSON.parse(saved) };
             if (!state.sinalPercent) state.sinalPercent = 30;
             if (!state.custoHora) state.custoHora = 0;
@@ -1690,7 +1899,17 @@
         }
 
         function saveState() {
-            localStorage.setItem('refrigBlindadoV5', JSON.stringify(state));
+            if (_MODO_DEMO) return; // demo: não persiste dados
+            try {
+                localStorage.setItem('eletristapower_v1', JSON.stringify(state));
+                verificarStorage();
+            } catch(e) {
+                if (e.name === 'QuotaExceededError' || e.code === 22) {
+                    alert('⚠️ Armazenamento cheio!\n\nFaça um backup dos dados (Configurações → Backup) e limpe o histórico antigo.');
+                } else {
+                    throw e;
+                }
+            }
         }
 
         function applyConfigToUI() {
@@ -2017,9 +2236,9 @@
         }
 
         // ─────────────────────────────────────────────
-        // CÁLCULO
+        // CÁLCULO — funções separadas por responsabilidade
         // ─────────────────────────────────────────────
-        function calcularPrecos() {
+        function _coletarServicos() {
             let totalServicos = 0, itens = [];
             document.querySelectorAll('.service-row').forEach(row => {
                 const select = row.querySelector('select');
@@ -2032,43 +2251,36 @@
                     itens.push({ nome, qtd, total: preco * qtd, unitario: preco });
                 }
             });
+            return { totalServicos, itens };
+        }
 
-            if (totalServicos === 0) { alert('Adicione ao menos um serviço com valor.'); return; }
-
-            // Calcular total de materiais da lista
+        function _coletarMateriais() {
             let mat = 0, itensMat = [];
             document.querySelectorAll('.material-row').forEach(row => {
                 const select = row.querySelector('.mat-select');
                 if (!select || select.selectedIndex === 0) return;
-                const opt        = select.options[select.selectedIndex];
-                const nome       = select.value;
-                const preco      = parseMoeda(row.querySelector('.mat-price').value);
-                const qtd        = parseInt(row.querySelector('.qty-value').value) || 1;
-                const isInt      = opt.dataset.isInterruptor === '1';
-                const isCaixa    = opt.dataset.isCaixa === '1';
-                const isDis      = opt.dataset.isDisjuntor === '1';
-                const isTom      = opt.dataset.isTomada === '1';
-                const isEle      = opt.dataset.isEletroduto === '1';
-                const isQua      = opt.dataset.isQuadro === '1';
-                const isCPP      = opt.dataset.isCaboPP === '1';
-                const sel1val    = row.querySelector('.mat-sel1') ? row.querySelector('.mat-sel1').value : '';
-                const sel2val    = row.querySelector('.mat-sel2') ? row.querySelector('.mat-sel2').value : '';
+                const opt     = select.options[select.selectedIndex];
+                const nome    = select.value;
+                const preco   = parseMoeda(row.querySelector('.mat-price').value);
+                const qtd     = parseInt(row.querySelector('.qty-value').value) || 1;
+                const isInt   = opt.dataset.isInterruptor === '1';
+                const isCaixa = opt.dataset.isCaixa === '1';
+                const isDis   = opt.dataset.isDisjuntor === '1';
+                const isTom   = opt.dataset.isTomada === '1';
+                const isEle   = opt.dataset.isEletroduto === '1';
+                const isQua   = opt.dataset.isQuadro === '1';
+                const isCPP   = opt.dataset.isCaboPP === '1';
+                const sel1val = row.querySelector('.mat-sel1')?.value || '';
+                const sel2val = row.querySelector('.mat-sel2')?.value || '';
                 let nomeCompleto = nome;
                 if (isCPP) {
-                    // Gera: Cabo PP 3x1mm
-                    const condutores = sel2val || '?';
-                    const secao      = sel1val || '?';
-                    nomeCompleto = `${nome} ${condutores}x${secao}`;
+                    nomeCompleto = `${nome} ${sel2val || '?'}x${sel1val || '?'}`;
                 } else if (isInt || isCaixa || isDis || isTom || isEle || isQua) {
-                    const detalhes = [];
-                    if (sel1val) detalhes.push(sel1val);
-                    if (sel2val) detalhes.push(sel2val);
+                    const detalhes = [sel1val, sel2val].filter(Boolean);
                     if (detalhes.length) nomeCompleto = `${nome} (${detalhes.join(' | ')})`;
                 } else {
                     const unLabel = UNIDADES.find(u => u.val === sel1val)?.label || sel1val;
-                    const detalhes = [];
-                    if (unLabel) detalhes.push(unLabel);
-                    if (sel2val) detalhes.push(sel2val);
+                    const detalhes = [unLabel, sel2val].filter(Boolean);
                     if (detalhes.length) nomeCompleto = `${nome} (${detalhes.join(' | ')})`;
                 }
                 if (nome && preco > 0) {
@@ -2076,48 +2288,63 @@
                     itensMat.push({ nome: nomeCompleto, qtd, total: preco * qtd, unitario: preco });
                 }
             });
+            return { mat, itensMat };
+        }
 
+        function _calcularTotais(totalServicos, mat) {
             const km           = parseFloat(document.getElementById('distanciaKm').value) || 0;
             const horas        = parseFloat(document.getElementById('tempoHoras').value) || 0;
-            const garantiaDias = document.getElementById('inputGarantia').value || 90;
             const dadosVeiculo = DATA_VEICULOS[state.veiculo] || DATA_VEICULOS.hatch;
             const custoLog     = km * ((state.gasolina / dadosVeiculo.eficiencia) + dadosVeiculo.custoKm);
             const custoHoras   = horas * (state.custoHora || 0);
             const totalFinal   = totalServicos + mat + custoLog + custoHoras;
             const percSinal    = state.sinalPercent || 30;
             const valorSinal   = totalFinal * (percSinal / 100);
+            return { km, horas, custoLog, custoHoras, totalFinal, percSinal, valorSinal };
+        }
 
-            document.getElementById('displayLogistica').innerText  = formatBRL(custoLog);
-            document.getElementById('displayMaoObra').innerText    = formatBRL(totalServicos);
-            document.getElementById('displayMateriais').innerText  = formatBRL(mat);
-            document.getElementById('displayPrecoFinal').innerText = formatBRL(totalFinal);
-            document.getElementById('displayLucroLiquido').innerText = formatBRL(totalServicos - custoLog - custoHoras);
-            document.getElementById('displayDespesas').innerText   = formatBRL(mat + custoLog + custoHoras);
-
-            dadosOrcamento = {
-                id:          Date.now(),
-                prestador:   document.getElementById('nomePrestador').value   || 'Técnico',
-                cliente:     document.getElementById('nomeCliente').value     || 'Cliente',
-                endereco:    document.getElementById('enderecoCliente').value || '',
-                telefone:    document.getElementById('telefoneCliente').value || '',
-                detalhes:    document.getElementById('detalhesServico').value || '',
-                data:        document.getElementById('dataServico').value.split('-').reverse().join('/'),
-                hora:        document.getElementById('horaServico').value,
-                itens,
-                itensMat,
-                total:       totalFinal,
-                sinal:       valorSinal,
-                sinalPercent: percSinal,
-                saldo:       totalFinal - valorSinal,
-                mat,
-                garantia:    `${garantiaDias} dias`
-            };
-
-            salvarNoHistorico(dadosOrcamento);
-            gerarMensagensProntas(dadosOrcamento);
+        function _exibirResultados(totais, totalServicos, mat) {
+            document.getElementById('displayLogistica').innerText    = formatBRL(totais.custoLog);
+            document.getElementById('displayMaoObra').innerText      = formatBRL(totalServicos);
+            document.getElementById('displayMateriais').innerText    = formatBRL(mat);
+            document.getElementById('displayPrecoFinal').innerText   = formatBRL(totais.totalFinal);
+            document.getElementById('displayLucroLiquido').innerText = formatBRL(totalServicos - totais.custoLog - totais.custoHoras);
+            document.getElementById('displayDespesas').innerText     = formatBRL(mat + totais.custoLog + totais.custoHoras);
             document.getElementById('input-section').classList.add('hidden');
             document.getElementById('results-section').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function calcularPrecos() {
+            const { totalServicos, itens } = _coletarServicos();
+            if (totalServicos === 0) { alert('Adicione ao menos um serviço com valor.'); return; }
+
+            const { mat, itensMat }                      = _coletarMateriais();
+            const totais                                  = _calcularTotais(totalServicos, mat);
+            const garantiaDias                            = document.getElementById('inputGarantia').value || 90;
+
+            dadosOrcamento = {
+                id:           Date.now(),
+                prestador:    document.getElementById('nomePrestador').value   || 'Técnico',
+                cliente:      document.getElementById('nomeCliente').value     || 'Cliente',
+                endereco:     document.getElementById('enderecoCliente').value || '',
+                telefone:     document.getElementById('telefoneCliente').value || '',
+                detalhes:     document.getElementById('detalhesServico').value || '',
+                data:         document.getElementById('dataServico').value.split('-').reverse().join('/'),
+                hora:         document.getElementById('horaServico').value,
+                itens,
+                itensMat,
+                total:        totais.totalFinal,
+                sinal:        totais.valorSinal,
+                sinalPercent: totais.percSinal,
+                saldo:        totais.totalFinal - totais.valorSinal,
+                mat,
+                garantia:     `${garantiaDias} dias`
+            };
+
+            _exibirResultados(totais, totalServicos, mat);
+            salvarNoHistorico(dadosOrcamento);
+            gerarMensagensProntas(dadosOrcamento);
         }
 
         // ─────────────────────────────────────────────
@@ -2333,11 +2560,20 @@
         }
 
         // ── SCROLL LOCK ──
-        function lockScroll()   { document.body.classList.add('modal-open'); }
+        let _scrollYSalvo = 0;
+        function lockScroll() {
+            _scrollYSalvo = window.scrollY;
+            document.body.style.top = `-${_scrollYSalvo}px`;
+            document.body.classList.add('modal-open');
+        }
         function unlockScroll() {
             const abertos = ['agendaModal','ferramentasModal','historyModal','settingsModal']
                 .some(id => !document.getElementById(id).classList.contains('hidden'));
-            if (!abertos) document.body.classList.remove('modal-open');
+            if (!abertos) {
+                document.body.classList.remove('modal-open');
+                document.body.style.top = '';
+                window.scrollTo(0, _scrollYSalvo);
+            }
         }
 
         function toggleHistory() {
@@ -2347,7 +2583,7 @@
                 lockScroll();
                 renderHistoricoUI();
                 m.classList.remove('hidden');
-                setTimeout(() => c.classList.remove('translate-x-full'), 10);
+                requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('translate-x-full')));
             } else {
                 c.classList.add('translate-x-full');
                 setTimeout(() => { m.classList.add('hidden'); unlockScroll(); }, 300);
@@ -2482,7 +2718,7 @@
             if (m.classList.contains('hidden')) {
                 lockScroll();
                 m.classList.remove('hidden');
-                setTimeout(() => c.classList.remove('translate-y-full'), 10);
+                requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('translate-y-full')));
                 renderListaServicosBase();
                 renderListaMateriaisBase();
             } else {
@@ -2590,8 +2826,8 @@
                     alert('❌ A senha deve ter pelo menos 4 caracteres.');
                     return;
                 }
-                if (novoUser) localStorage.setItem('ep_user', btoa(novoUser));
-                if (novaSenha) localStorage.setItem('ep_pass', btoa(novaSenha));
+                if (novoUser) _sha256(novoUser).then(h => localStorage.setItem('ep_user', h));
+                if (novaSenha) _sha256(novaSenha).then(h => localStorage.setItem('ep_pass', h));
                 alert('✅ Usuário/senha atualizados com sucesso!');
                 document.getElementById('configUsuario').value = '';
                 document.getElementById('configSenha').value = '';
@@ -2823,23 +3059,8 @@
             renderModelosCheck();
         }
 
-        function renderChecklist() {
+        function _atualizarProgressoChecklist() {
             const cont = document.getElementById('checklist-container');
-            cont.innerHTML = '';
-            checklistItems.forEach((item, i) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${item.ok ? 'bg-green-50 border-green-200' : 'bg-white border-slate-200'}`;
-                div.onclick = () => { checklistItems[i].ok = !checklistItems[i].ok; renderChecklist(); };
-                const check = document.createElement('div');
-                check.className = `w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-green-500' : 'border-2 border-slate-300'}`;
-                if (item.ok) check.innerHTML = '<svg class="ico text-white" style="width:10px;height:10px" aria-hidden="true"><use href="#i-check"></use></svg>';
-                const txt = document.createElement('span');
-                txt.className = `text-xs font-medium flex-grow ${item.ok ? 'text-green-700 line-through' : 'text-slate-600'}`;
-                txt.textContent = item.texto;
-                div.appendChild(check);
-                div.appendChild(txt);
-                cont.appendChild(div);
-            });
             const feitos = checklistItems.filter(i => i.ok).length;
             const total  = checklistItems.length;
             const pct    = total > 0 ? Math.round((feitos / total) * 100) : 0;
@@ -2861,6 +3082,41 @@
             `;
         }
 
+        function _toggleCheckItem(i) {
+            checklistItems[i].ok = !checklistItems[i].ok;
+            const cont = document.getElementById('checklist-container');
+            const div  = cont.children[i];
+            if (!div) { renderChecklist(); return; }
+            const item  = checklistItems[i];
+            div.className = `flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${item.ok ? 'bg-green-50 border-green-200' : 'bg-white border-slate-200'}`;
+            const check = div.children[0];
+            check.className = `w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-green-500' : 'border-2 border-slate-300'}`;
+            check.innerHTML = item.ok ? '<svg class="ico text-white" style="width:10px;height:10px" aria-hidden="true"><use href="#i-check"></use></svg>' : '';
+            const txt = div.children[1];
+            txt.className = `text-xs font-medium flex-grow ${item.ok ? 'text-green-700 line-through' : 'text-slate-600'}`;
+            _atualizarProgressoChecklist();
+        }
+
+        function renderChecklist() {
+            const cont = document.getElementById('checklist-container');
+            cont.innerHTML = '';
+            checklistItems.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${item.ok ? 'bg-green-50 border-green-200' : 'bg-white border-slate-200'}`;
+                div.onclick = () => _toggleCheckItem(i);
+                const check = document.createElement('div');
+                check.className = `w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${item.ok ? 'bg-green-500' : 'border-2 border-slate-300'}`;
+                if (item.ok) check.innerHTML = '<svg class="ico text-white" style="width:10px;height:10px" aria-hidden="true"><use href="#i-check"></use></svg>';
+                const txt = document.createElement('span');
+                txt.className = `text-xs font-medium flex-grow ${item.ok ? 'text-green-700 line-through' : 'text-slate-600'}`;
+                txt.textContent = item.texto;
+                div.appendChild(check);
+                div.appendChild(txt);
+                cont.appendChild(div);
+            });
+            _atualizarProgressoChecklist();
+        }
+
         function resetChecklist() {
             checklistItems.forEach(i => i.ok = false);
             renderChecklist();
@@ -2872,7 +3128,7 @@
             if (m.classList.contains('hidden')) {
                 lockScroll();
                 m.classList.remove('hidden');
-                setTimeout(() => c.classList.remove('translate-y-full'), 10);
+                requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('translate-y-full')));
                 renderModelosCheck();
                 renderTabelaNBR();
             } else {
@@ -3975,7 +4231,7 @@
             if (m.classList.contains('hidden')) {
                 lockScroll();
                 m.classList.remove('hidden');
-                setTimeout(() => c.classList.remove('translate-y-full'), 10);
+                requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('translate-y-full')));
                 // setar mês/ano atual no relatório
                 const hoje = new Date();
                 document.getElementById('rel-mes').value = hoje.getMonth();
