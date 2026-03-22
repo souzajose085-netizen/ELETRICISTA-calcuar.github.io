@@ -479,6 +479,121 @@
     body.dark-mode #medidas-section [style*="color:#0f172a"] { color:#f8fafc !important; }
     body.dark-mode #medidas-section [style*="color:#64748b"] { color:#475569 !important; }
 
+
+    /* ════════ DARK MODE FORÇADO (sobrescreve Tailwind) ════════ */
+    body.dark-mode { background-color: #0f172a !important; color: #e2e8f0 !important; }
+    body.dark-mode * { border-color: inherit; }
+
+    /* Wrapper e container principal */
+    body.dark-mode .app-wrapper { background-color: #0f172a !important; }
+    body.dark-mode .max-w-md,
+    body.dark-mode .bg-white { background-color: #111827 !important; }
+    body.dark-mode .bg-slate-50 { background-color: #1e293b !important; }
+    body.dark-mode .bg-slate-100 { background-color: #1e293b !important; }
+    body.dark-mode .bg-orange-50 { background-color: #1c1000 !important; }
+    body.dark-mode .bg-orange-100 { background-color: #1c1000 !important; }
+    body.dark-mode .bg-blue-50 { background-color: #0c1a3a !important; }
+    body.dark-mode .bg-blue-100 { background-color: #0c1a3a !important; }
+    body.dark-mode .bg-green-50 { background-color: #052e16 !important; }
+    body.dark-mode .bg-green-100 { background-color: #052e16 !important; }
+    body.dark-mode .bg-red-50 { background-color: #2d0707 !important; }
+
+    /* Textos */
+    body.dark-mode .text-slate-800 { color: #f1f5f9 !important; }
+    body.dark-mode .text-slate-700 { color: #e2e8f0 !important; }
+    body.dark-mode .text-slate-600 { color: #cbd5e1 !important; }
+    body.dark-mode .text-slate-500 { color: #94a3b8 !important; }
+    body.dark-mode .text-slate-400 { color: #64748b !important; }
+
+    /* Bordas */
+    body.dark-mode .border-slate-200 { border-color: #1e293b !important; }
+    body.dark-mode .border-slate-100 { border-color: #1e293b !important; }
+    body.dark-mode .border-slate-300 { border-color: #334155 !important; }
+
+    /* Inputs */
+    body.dark-mode input:not([type="file"]),
+    body.dark-mode select,
+    body.dark-mode textarea {
+        background-color: #1e293b !important;
+        color: #e2e8f0 !important;
+        border-color: #334155 !important;
+    }
+    body.dark-mode input::placeholder,
+    body.dark-mode textarea::placeholder { color: #475569 !important; }
+
+    /* Header já é escuro, mas reforçar */
+    body.dark-mode header { background-color: #070d1a !important; }
+
+    /* Conteúdo principal scrollável */
+    body.dark-mode .rounded-t-\[1\.5rem\] { background-color: #111827 !important; }
+    body.dark-mode .shadow-\[0_-10px_20px_-5px_rgba\(0\2c0\2c0\2c0\.1\)\] {
+        box-shadow: 0 -10px 20px -5px rgba(0,0,0,0.5) !important;
+    }
+
+    /* Modais */
+    body.dark-mode #settingsModal .bg-white,
+    body.dark-mode #settingsModal .bg-slate-50 { background-color: #1e293b !important; }
+    body.dark-mode #settingsModal .border-slate-200 { border-color: #334155 !important; }
+    body.dark-mode #settingsModal .text-slate-800 { color: #f1f5f9 !important; }
+    body.dark-mode #settingsModal .text-slate-700 { color: #e2e8f0 !important; }
+    body.dark-mode #settingsModal .text-slate-500 { color: #94a3b8 !important; }
+    body.dark-mode #settingsModal .text-slate-400 { color: #64748b !important; }
+    body.dark-mode #settingsModal .text-slate-600 { color: #cbd5e1 !important; }
+    body.dark-mode #settingsModal .bg-white { background-color: #1e293b !important; }
+    body.dark-mode #settingsModal h2 { color: #f8fafc !important; }
+
+    body.dark-mode #historyModal .bg-slate-50 { background-color: #0f172a !important; }
+    body.dark-mode #historyModal .bg-white { background-color: #111827 !important; }
+    body.dark-mode #historyModal .border-slate-200 { border-color: #1e293b !important; }
+    body.dark-mode #historyModal .text-slate-800 { color: #f1f5f9 !important; }
+    body.dark-mode #historyModal .text-slate-700 { color: #e2e8f0 !important; }
+    body.dark-mode #historyModal .text-slate-600 { color: #cbd5e1 !important; }
+    body.dark-mode #historyModal .text-slate-500 { color: #94a3b8 !important; }
+
+    /* Resultados e cards */
+    body.dark-mode .ring-slate-100 { --tw-ring-color: #1e293b !important; }
+    body.dark-mode .border-b { border-color: #1e293b !important; }
+    body.dark-mode .border-t { border-color: #1e293b !important; }
+
+    /* Hover states no dark */
+    body.dark-mode .hover\:bg-slate-50:hover { background-color: #1e293b !important; }
+    body.dark-mode .hover\:bg-white:hover { background-color: #1e293b !important; }
+    body.dark-mode .hover\:bg-red-50:hover { background-color: #2d0707 !important; }
+    body.dark-mode .hover\:bg-blue-50:hover { background-color: #0c1a3a !important; }
+    body.dark-mode .hover\:bg-green-50:hover { background-color: #052e16 !important; }
+
+    /* Botão de tema no settings */
+    body.dark-mode #btnTema {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #e2e8f0 !important;
+    }
+
+    /* Calculadora medidas no dark */
+    body.dark-mode .med-card { background: #1e293b !important; border-color: #334155 !important; }
+    body.dark-mode .med-card-title { color: #64748b !important; }
+    body.dark-mode .med-field-lbl { color: #94a3b8 !important; }
+    body.dark-mode .med-field input,
+    body.dark-mode .med-pt-row input { background: #0f172a !important; color: #e2e8f0 !important; border-color: #334155 !important; }
+    body.dark-mode .med-tip { background: #1e293b !important; color: #64748b !important; }
+    body.dark-mode .med-btn-sec { border-color: #334155 !important; color: #64748b !important; }
+    body.dark-mode .med-add-pt { border-color: #334155 !important; color: #475569 !important; }
+    body.dark-mode .med-tab { background: #1e293b !important; border-color: #334155 !important; color: #64748b !important; }
+    body.dark-mode .med-tab.on { background: #f8fafc !important; color: #0f172a !important; }
+    body.dark-mode .med-measure-btn { background: #431407 !important; color: #fb923c !important; border-color: #9a3412 !important; }
+
+    /* Info modal sempre escuro */
+    .info-overlay .info-box { background: #111827; }
+    .info-overlay .info-row { background: #1e293b; }
+    .info-overlay .info-row-val { color: #f8fafc; }
+    .info-overlay .info-row-label { color: #64748b; }
+    .info-overlay .info-footer { border-color: #1e293b; color: #475569; }
+
+    /* Voltar button medidas dark */
+    body.dark-mode #medidas-section > div > button { background: #1e293b !important; color: #94a3b8 !important; }
+    body.dark-mode #medidas-section > div > div > div:first-child { color: #f1f5f9 !important; }
+    body.dark-mode #medidas-section > div > div > div:last-child { color: #64748b !important; }
+
     </style>
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
@@ -1861,6 +1976,184 @@
             document.querySelectorAll('#md-pts input').forEach(function(i){i.value='';});
             document.getElementById('md-p-res').classList.remove('show');
         }
+
+
+        // ════════════════════════════════════════════
+        // MODO ESCURO / CLARO
+        // ════════════════════════════════════════════
+        var _modoEscuro = false;
+
+        function alternarTema() {
+            _modoEscuro = !_modoEscuro;
+            document.body.classList.toggle('dark-mode', _modoEscuro);
+            var ico  = document.getElementById('temaIco');
+            var txt  = document.getElementById('temaTxt');
+            var desc = document.getElementById('temaDescricao');
+            if (ico)  ico.textContent  = _modoEscuro ? '☀️' : '🌙';
+            if (txt)  txt.textContent  = _modoEscuro ? 'Desativar Dark' : 'Ativar Dark';
+            if (desc) desc.textContent = _modoEscuro ? 'Modo escuro ativado 🌙' : 'Modo claro ativado ☀️';
+            var siTema = document.getElementById('si-tema');
+            if (siTema) siTema.textContent = _modoEscuro ? 'Escuro 🌙' : 'Claro ☀️';
+            try { localStorage.setItem('ep-tema', _modoEscuro ? 'dark' : 'light'); } catch(e) {}
+        }
+
+        // Restaurar tema salvo
+        try {
+            if (localStorage.getItem('ep-tema') === 'dark') {
+                _modoEscuro = false;
+                alternarTema();
+            }
+        } catch(e) {}
+
+        // ════════════════════════════════════════════
+        // MODAL INFORMAÇÕES DO SISTEMA
+        // ════════════════════════════════════════════
+        function abrirInfo() {
+            var m = document.getElementById('infoModal');
+            if (m) {
+                m.classList.add('aberto');
+                coletarInfoSistema();
+            }
+        }
+
+        function fecharInfo() {
+            var m = document.getElementById('infoModal');
+            if (m) m.classList.remove('aberto');
+        }
+
+        function coletarInfoSistema() {
+            // RAM
+            try {
+                if (performance && performance.memory) {
+                    var used  = (performance.memory.usedJSHeapSize  / 1048576).toFixed(1);
+                    var total = (performance.memory.totalJSHeapSize / 1048576).toFixed(1);
+                    var pct   = Math.round((performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit) * 100);
+                    document.getElementById('si-ram').textContent = used + ' MB usados de ' + total + ' MB';
+                    var bar = document.getElementById('si-ram-bar');
+                    if (bar) {
+                        bar.style.width = Math.min(pct, 100) + '%';
+                        bar.style.background = pct > 70 ? '#ef4444' : pct > 40 ? '#f59e0b' : '#f97316';
+                    }
+                } else {
+                    document.getElementById('si-ram').textContent = '~8–18 MB (estimativa — app leve)';
+                    var bar = document.getElementById('si-ram-bar');
+                    if (bar) { bar.style.width = '10%'; bar.style.background = '#f97316'; }
+                }
+            } catch(e) { document.getElementById('si-ram').textContent = 'Não disponível'; }
+
+            // RAM total do dispositivo
+            try {
+                var el = document.getElementById('si-ram-total');
+                if (el) el.textContent = navigator.deviceMemory
+                    ? navigator.deviceMemory + ' GB no dispositivo'
+                    : 'Não disponível neste navegador';
+            } catch(e) {}
+
+            // CPU
+            try {
+                var el = document.getElementById('si-cpu');
+                if (el) {
+                    var cores = navigator.hardwareConcurrency;
+                    el.textContent = cores ? cores + ' núcleos disponíveis' : 'Não detectado';
+                }
+            } catch(e) {}
+
+            // Carga do app
+            try {
+                document.getElementById('si-load').textContent = 'Muito leve — HTML puro';
+                var bar = document.getElementById('si-load-bar');
+                if (bar) { bar.style.width = '4%'; bar.style.background = '#22c55e'; }
+            } catch(e) {}
+
+            // Tamanho do app
+            try {
+                document.getElementById('si-size').textContent = '~137 KB (arquivo único)';
+            } catch(e) {}
+
+            // Dados salvos
+            try {
+                var keys = Object.keys(localStorage);
+                var bytes = 0;
+                keys.forEach(function(k) { bytes += ((localStorage.getItem(k) || '').length * 2); });
+                var el = document.getElementById('si-storage');
+                if (el) el.textContent = bytes > 0
+                    ? (bytes / 1024).toFixed(1) + ' KB (' + keys.length + ' itens salvos)'
+                    : 'Nenhum dado salvo ainda';
+            } catch(e) {
+                var el = document.getElementById('si-storage');
+                if (el) el.textContent = 'Não disponível';
+            }
+
+            // PWA / modo de exibição
+            try {
+                var standalone = window.matchMedia('(display-mode: standalone)').matches
+                               || window.navigator.standalone === true;
+                var el = document.getElementById('si-pwa');
+                if (el) el.textContent = standalone ? '✅ Instalado como app' : '📲 Rodando no navegador';
+            } catch(e) {}
+
+            // Navegador
+            try {
+                var ua = navigator.userAgent;
+                var br = 'Navegador';
+                if (/iPhone|iPad/.test(ua))               br = '🍎 Safari iOS';
+                else if (/Android/.test(ua) && /Chrome/.test(ua)) br = '🤖 Chrome Android';
+                else if (/Chrome/.test(ua))               br = '🌐 Google Chrome';
+                else if (/Firefox/.test(ua))              br = '🦊 Mozilla Firefox';
+                else if (/Safari/.test(ua))               br = '🧭 Safari';
+                var el = document.getElementById('si-browser');
+                if (el) el.textContent = br;
+            } catch(e) {}
+
+            // Conexão
+            try {
+                var online = navigator.onLine;
+                var el = document.getElementById('si-net');
+                if (el) {
+                    if (navigator.connection) {
+                        var tipo = (navigator.connection.effectiveType || '').toUpperCase();
+                        el.textContent = online ? '🟢 Online · ' + tipo : '📴 Offline (app funciona!)';
+                    } else {
+                        el.textContent = online ? '🟢 Online' : '📴 Offline (app funciona 100%!)';
+                    }
+                }
+            } catch(e) {}
+
+            // Bateria
+            try {
+                if (navigator.getBattery) {
+                    navigator.getBattery().then(function(b) {
+                        var pct = Math.round(b.level * 100);
+                        var el  = document.getElementById('si-bat');
+                        var bar = document.getElementById('si-bat-bar');
+                        if (el) el.textContent = pct + '%' + (b.charging ? ' · Carregando ⚡' : '');
+                        if (bar) {
+                            bar.style.width = pct + '%';
+                            bar.style.background = pct < 20 ? '#ef4444' : pct < 50 ? '#f59e0b' : '#22c55e';
+                        }
+                    });
+                } else {
+                    var el = document.getElementById('si-bat');
+                    if (el) el.textContent = 'Não disponível neste navegador';
+                }
+            } catch(e) {}
+
+            // Tema atual
+            try {
+                var el = document.getElementById('si-tema');
+                if (el) el.textContent = _modoEscuro ? 'Escuro 🌙' : 'Claro ☀️';
+            } catch(e) {}
+        }
+
+        // Fechar modal info clicando fora
+        document.addEventListener('DOMContentLoaded', function() {
+            var m = document.getElementById('infoModal');
+            if (m) {
+                m.addEventListener('click', function(e) {
+                    if (e.target === m) fecharInfo();
+                });
+            }
+        });
 
     </script>
 
