@@ -248,6 +248,7 @@
     ════════════════════════════════ */
     #medidas-section { display:none; }
     #medidas-section.active { display:block; }
+    #calc-btn-wrap { display:block; }
 
     .med-tabs { display:flex; gap:6px; margin-bottom:16px; }
     .med-tab {
@@ -593,6 +594,8 @@
     body.dark-mode #medidas-section > div > button { background: #1e293b !important; color: #94a3b8 !important; }
     body.dark-mode #medidas-section > div > div > div:first-child { color: #f1f5f9 !important; }
     body.dark-mode #medidas-section > div > div > div:last-child { color: #64748b !important; }
+    body.dark-mode #calc-btn-wrap { background: #111827 !important; }
+    body.dark-mode #medidas-section > div > button:last-child { background: #3b0a0a !important; color: #f87171 !important; }
 
     </style>
 
@@ -665,6 +668,19 @@
 
             <!-- CONTEÚDO SCROLLÁVEL -->
             <div class="relative -mt-6 bg-white rounded-t-[1.5rem] flex-grow shadow-[0_-10px_20px_-5px_rgba(0,0,0,0.1)] z-30 overflow-y-auto pb-20">
+
+                <!-- BOTÃO CALCULADORA — sempre visível na tela principal -->
+                <div id="calc-btn-wrap" class="p-5 pb-0">
+                    <button class="med-quick-btn" onclick="abrirMedidas()">
+                        <div class="med-quick-ico">📐</div>
+                        <div>
+                            <div class="med-quick-title">Calculadora de Medidas</div>
+                            <div class="med-quick-sub">Distância · Área · Perímetro</div>
+                        </div>
+                        <svg style="margin-left:auto;flex-shrink:0;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+
                 <div class="p-5 pt-6">
 
                     <!-- TELA 1: INPUTS -->
@@ -677,16 +693,6 @@
                             <span class="tracking-wide">OFERTAS DA SEMANA</span>
                             <svg class="ico text-[10px] opacity-60 ml-1" aria-hidden="true"><use href="#i-arrow-up-right-from-square"></use></svg>
                         </a>
-
-                        <!-- BOTÃO CALCULADORA DE MEDIDAS -->
-                        <button class="med-quick-btn" onclick="abrirMedidas()">
-                            <div class="med-quick-ico">📐</div>
-                            <div>
-                                <div class="med-quick-title">Calculadora de Medidas</div>
-                                <div class="med-quick-sub">Distância · Área · Perímetro</div>
-                            </div>
-                            <svg style="margin-left:auto;flex-shrink:0;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-                        </button>
 
 
                         <!-- Dados Cliente -->
@@ -883,15 +889,16 @@
                     ════════════════════════ -->
                     <div id="medidas-section">
 
-                        <!-- CABEÇALHO COM VOLTAR -->
+                        <!-- CABEÇALHO COM VOLTAR E FECHAR -->
                         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-                            <button onclick="fecharMedidas()" style="display:flex;align-items:center;gap:6px;background:#f1f5f9;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:#475569;cursor:pointer;">
+                            <button onclick="fecharMedidas()" style="display:flex;align-items:center;gap:6px;background:#f1f5f9;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:#475569;cursor:pointer;flex-shrink:0;">
                                 ← Voltar
                             </button>
                             <div style="flex:1;">
                                 <div style="font-size:15px;font-weight:700;color:#0f172a;">Calculadora de Medidas</div>
                                 <div style="font-size:11px;color:#64748b;">Distância · Área · Perímetro</div>
                             </div>
+                            <button onclick="fecharMedidas()" style="width:32px;height:32px;border-radius:50%;background:#fee2e2;border:none;color:#ef4444;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✕</button>
                         </div>
 
                         <!-- BOTÃO MEASURE -->
@@ -1863,16 +1870,41 @@
         }
 
         function abrirMedidas() {
-            document.getElementById('input-section').style.display = 'none';
-            var rs = document.getElementById('results-section');
-            if(rs){ rs.classList.add('hidden'); }
-            document.getElementById('medidas-section').classList.add('active');
-            window.scrollTo(0,0);
+            // Esconder tudo exceto a calculadora
+            var inputSec = document.getElementById('input-section');
+            var resultSec = document.getElementById('results-section');
+            var calcBtn = document.getElementById('calc-btn-wrap');
+            var p5 = document.querySelector('.p-5.pt-6');
+            if (inputSec)  inputSec.style.display  = 'none';
+            if (resultSec) { resultSec.classList.add('hidden'); resultSec.style.display = 'none'; }
+            if (calcBtn)   calcBtn.style.display   = 'none';
+            if (p5)        p5.style.display        = 'none';
+            // Mostrar calculadora
+            var med = document.getElementById('medidas-section');
+            if (med) {
+                med.classList.add('active');
+                med.style.display = 'block';
+                med.style.padding = '20px 20px 40px';
+            }
+            window.scrollTo(0, 0);
         }
 
         function fecharMedidas() {
-            document.getElementById('input-section').style.display = '';
-            document.getElementById('medidas-section').classList.remove('active');
+            // Restaurar tudo
+            var inputSec = document.getElementById('input-section');
+            var resultSec = document.getElementById('results-section');
+            var calcBtn = document.getElementById('calc-btn-wrap');
+            var p5 = document.querySelector('.p-5.pt-6');
+            if (inputSec)  inputSec.style.display  = '';
+            if (resultSec) { resultSec.style.display = ''; }
+            if (calcBtn)   calcBtn.style.display   = '';
+            if (p5)        p5.style.display        = '';
+            // Esconder calculadora
+            var med = document.getElementById('medidas-section');
+            if (med) {
+                med.classList.remove('active');
+                med.style.display = 'none';
+            }
         }
 
         function mdCalcDist() {
