@@ -594,8 +594,81 @@
     body.dark-mode #medidas-section > div > button { background: #1e293b !important; color: #94a3b8 !important; }
     body.dark-mode #medidas-section > div > div > div:first-child { color: #f1f5f9 !important; }
     body.dark-mode #medidas-section > div > div > div:last-child { color: #64748b !important; }
+    /* Container principal de conteúdo */
+    body.dark-mode .p-5.pt-6 { background-color: #111827 !important; }
+    body.dark-mode .overflow-y-auto { background-color: #111827 !important; }
+    body.dark-mode .space-y-5 { background-color: transparent !important; }
+    body.dark-mode .pb-20 { background-color: #111827 !important; }
+    /* Inputs e selects globais */
+    body.dark-mode input:not([type="file"]):not([type="range"]),
+    body.dark-mode select {
+        background-color: #1e293b !important;
+        color: #e2e8f0 !important;
+        border-color: #334155 !important;
+    }
+    body.dark-mode input::placeholder { color: #475569 !important; }
+    /* Moeda / valor inputs */
+    body.dark-mode .font-mono { color: #e2e8f0 !important; }
+    /* Badges e pills de status */
+    body.dark-mode .bg-blue-100 { background-color: #0c1a3a !important; }
+    body.dark-mode .text-blue-700 { color: #93c5fd !important; }
+    body.dark-mode .text-blue-600 { color: #93c5fd !important; }
+    body.dark-mode .text-green-600 { color: #86efac !important; }
+    body.dark-mode .text-orange-600 { color: #fb923c !important; }
+    body.dark-mode .text-red-500 { color: #f87171 !important; }
+    /* Separadores */
+    body.dark-mode .border-b { border-bottom-color: #1e293b !important; }
+    body.dark-mode .border-t { border-top-color: #1e293b !important; }
+    /* Cards de resultado (bg-[#0f172a] já é escuro — manter) */
+    /* Afiliado button gradient — manter pois é decorativo */
+    /* Botão salvar ajustes — manter escuro */
+
     body.dark-mode #calc-btn-wrap { background: #111827 !important; }
     body.dark-mode #medidas-section > div > button:last-child { background: #3b0a0a !important; color: #f87171 !important; }
+
+
+    /* ══ CALCULADORA MODAL ══ */
+    .calc-tab{flex:1;padding:9px 4px;border-radius:10px;border:1px solid #e2e8f0;background:#f1f5f9;font-size:11px;font-weight:700;color:#64748b;cursor:pointer;text-align:center;text-transform:uppercase;letter-spacing:.5px;}
+    .calc-tab.on{background:#0f172a;color:#fff;border-color:#0f172a;}
+    .calc-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-bottom:12px;}
+    .calc-card-title{font-size:12px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+    .calc-tip{font-size:11px;color:#94a3b8;background:#f8fafc;border-radius:8px;padding:8px 10px;margin-bottom:12px;line-height:1.6;}
+    .calc-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+    .calc-lbl{font-size:12px;color:#64748b;min-width:100px;flex-shrink:0;}
+    .calc-row input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;font-size:14px;color:#0f172a;outline:none;}
+    .calc-row input:focus{border-color:#3b82f6;background:#fff;}
+    .calc-unit{font-size:12px;color:#94a3b8;min-width:20px;flex-shrink:0;}
+    .calc-btn{width:100%;padding:13px;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;color:#fff;}
+    .calc-btn.blue{background:#3b82f6;}
+    .calc-btn.blue:active{background:#2563eb;}
+    .calc-btn.green{background:#16a34a;}
+    .calc-btn.green:active{background:#15803d;}
+    .calc-btn-sec{width:100%;padding:10px;border-radius:12px;background:transparent;border:1px solid #e2e8f0;color:#94a3b8;font-size:12px;cursor:pointer;margin-top:6px;}
+    .calc-result{background:#0f172a;border-radius:14px;padding:14px;margin-top:12px;}
+    .calc-result-lbl{font-size:11px;color:#64748b;margin-bottom:3px;}
+    .calc-result-val{font-size:28px;font-weight:700;color:#fff;display:flex;align-items:baseline;gap:6px;margin-bottom:10px;}
+    .calc-result-unit{font-size:14px;color:#94a3b8;font-weight:400;}
+    .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid #1e293b;padding-top:10px;}
+    .calc-mini-lbl{font-size:10px;color:#475569;margin-bottom:2px;}
+    .calc-mini-val{font-size:14px;font-weight:600;color:#e2e8f0;}
+    .cpt-row{display:flex;align-items:center;gap:6px;}
+    .cpt-lbl{font-size:11px;font-weight:700;color:#64748b;min-width:24px;}
+    .cpt-row input{flex:1;padding:9px 10px;border-radius:8px;border:1px solid #e2e8f0;background:#f8fafc;font-size:13px;color:#0f172a;outline:none;}
+    .cpt-del{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:15px;padding:4px 6px;}
+
+    /* Dark mode calculadora */
+    body.dark-mode #calc-modal{background:#0f172a;}
+    body.dark-mode .calc-card{background:#111827;border-color:#1e293b;}
+    body.dark-mode .calc-card-title{color:#475569;}
+    body.dark-mode .calc-tip{background:#1e293b;color:#475569;}
+    body.dark-mode .calc-row input{background:#1e293b;color:#e2e8f0;border-color:#334155;}
+    body.dark-mode .calc-row input:focus{border-color:#3b82f6;background:#0f172a;}
+    body.dark-mode .calc-lbl{color:#94a3b8;}
+    body.dark-mode .calc-tab{background:#1e293b;border-color:#334155;color:#64748b;}
+    body.dark-mode .calc-tab.on{background:#f8fafc;color:#0f172a;}
+    body.dark-mode .calc-btn-sec{border-color:#334155;color:#475569;}
+    body.dark-mode .cpt-row input{background:#1e293b;color:#e2e8f0;border-color:#334155;}
+    body.dark-mode #cpts button{border-color:#334155;color:#475569;}
 
     </style>
 
@@ -884,192 +957,7 @@
                             </div>
                         </div>
                     
-                    <!-- ════════════════════════
-                         CALCULADORA DE MEDIDAS
-                    ════════════════════════ -->
-                    <div id="medidas-section">
-
-                        <!-- CABEÇALHO COM VOLTAR E FECHAR -->
-                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-                            <button onclick="fecharMedidas()" style="display:flex;align-items:center;gap:6px;background:#f1f5f9;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:#475569;cursor:pointer;flex-shrink:0;">
-                                ← Voltar
-                            </button>
-                            <div style="flex:1;">
-                                <div style="font-size:15px;font-weight:700;color:#0f172a;">Calculadora de Medidas</div>
-                                <div style="font-size:11px;color:#64748b;">Distância · Área · Perímetro</div>
-                            </div>
-                            <button onclick="fecharMedidas()" style="width:32px;height:32px;border-radius:50%;background:#fee2e2;border:none;color:#ef4444;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✕</button>
-                        </div>
-
-                        <!-- BOTÃO MEASURE -->
-                        <button class="med-measure-btn" onclick="abrirMeasure()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12h20M12 2v20M7 7l10 10M17 7L7 17"/></svg>
-                            Abrir app Measure da Apple (LiDAR)
-                        </button>
-
-                        <!-- ABAS -->
-                        <div class="med-tabs">
-                            <div class="med-tab on" onclick="medAba(0)">📏 Distância</div>
-                            <div class="med-tab" onclick="medAba(1)">⬜ Área</div>
-                            <div class="med-tab" onclick="medAba(2)">🔲 Perímetro</div>
-                        </div>
-
-                        <!-- ── DISTÂNCIA ── -->
-                        <div class="med-panel on" id="mp0">
-                            <div class="med-card">
-                                <div class="med-card-title">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="12" x2="22" y2="12"/><circle cx="2" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="22" cy="12" r="2" fill="currentColor" stroke="none"/></svg>
-                                    Distância entre dois pontos
-                                </div>
-                                <div class="med-tip" style="margin-bottom:12px;">
-                                    📐 Meça os pontos com o app Measure da Apple. Digite as coordenadas X e Y de cada ponto aqui.
-                                </div>
-                                <div class="med-field">
-                                    <span class="med-field-lbl">Ponto A — X</span>
-                                    <input type="number" id="md-ax" placeholder="0.00" step="0.01">
-                                    <span class="med-unit">m</span>
-                                </div>
-                                <div class="med-field">
-                                    <span class="med-field-lbl">Ponto A — Y</span>
-                                    <input type="number" id="md-ay" placeholder="0.00" step="0.01">
-                                    <span class="med-unit">m</span>
-                                </div>
-                                <div class="med-field">
-                                    <span class="med-field-lbl">Ponto B — X</span>
-                                    <input type="number" id="md-bx" placeholder="0.00" step="0.01">
-                                    <span class="med-unit">m</span>
-                                </div>
-                                <div class="med-field">
-                                    <span class="med-field-lbl">Ponto B — Y</span>
-                                    <input type="number" id="md-by" placeholder="0.00" step="0.01">
-                                    <span class="med-unit">m</span>
-                                </div>
-                                <button class="med-btn" onclick="mdCalcDist()">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Calcular distância
-                                </button>
-                                <button class="med-btn-sec" onclick="mdLimpar('d')">Limpar</button>
-
-                                <div class="med-result" id="md-d-res">
-                                    <div class="med-result-main">
-                                        <div class="med-result-lbl">Distância A → B</div>
-                                        <div class="med-result-val">
-                                            <span id="md-d-val">0.00</span>
-                                            <span class="med-result-unit">m</span>
-                                        </div>
-                                    </div>
-                                    <div class="med-grid">
-                                        <div class="med-mini"><div class="med-mini-lbl">Diferença X</div><div class="med-mini-val" id="md-d-dx">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Diferença Y</div><div class="med-mini-val" id="md-d-dy">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Em cm</div><div class="med-mini-val" id="md-d-cm">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Em mm</div><div class="med-mini-val" id="md-d-mm">—</div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ── ÁREA ── -->
-                        <div class="med-panel" id="mp1">
-                            <div class="med-card">
-                                <div class="med-card-title">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/></svg>
-                                    Área retangular
-                                </div>
-                                <div class="med-tip" style="margin-bottom:12px;">
-                                    📐 Use o Measure para medir comprimento e largura do cômodo. Digite os valores abaixo.
-                                </div>
-                                <div class="med-field">
-                                    <span class="med-field-lbl">Comprimento</span>
-                                    <input type="number" id="md-comp" placeholder="0.00" step="0.01">
-                                    <span class="med-unit">m</span>
-                                </div>
-                                <div class="med-field">
-                                    <span class="med-field-lbl">Largura</span>
-                                    <input type="number" id="md-larg" placeholder="0.00" step="0.01">
-                                    <span class="med-unit">m</span>
-                                </div>
-                                <button class="med-btn green" onclick="mdCalcArea()">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Calcular área
-                                </button>
-                                <button class="med-btn-sec" onclick="mdLimpar('a')">Limpar</button>
-
-                                <div class="med-result" id="md-a-res">
-                                    <div class="med-result-main">
-                                        <div class="med-result-lbl">Área total</div>
-                                        <div class="med-result-val">
-                                            <span id="md-a-val">0.00</span>
-                                            <span class="med-result-unit">m²</span>
-                                        </div>
-                                    </div>
-                                    <div class="med-grid">
-                                        <div class="med-mini"><div class="med-mini-lbl">Perímetro</div><div class="med-mini-val" id="md-a-per">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Diagonal</div><div class="med-mini-val" id="md-a-diag">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Em cm²</div><div class="med-mini-val" id="md-a-cm2">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Cômodo</div><div class="med-mini-val" id="md-a-tipo">—</div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ── PERÍMETRO ── -->
-                        <div class="med-panel" id="mp2">
-                            <div class="med-card">
-                                <div class="med-card-title">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 22 20 2 20"/></svg>
-                                    Perímetro por pontos
-                                </div>
-                                <div class="med-tip" style="margin-bottom:12px;">
-                                    📐 Meça cada canto do cômodo com o Measure e vá adicionando os pontos em ordem. O app fecha o polígono automaticamente.
-                                </div>
-
-                                <div id="md-pts" class="med-pts">
-                                    <div class="med-pt-row" data-i="0">
-                                        <span class="med-pt-lbl">P1</span>
-                                        <input type="number" placeholder="X (m)" step="0.01">
-                                        <input type="number" placeholder="Y (m)" step="0.01">
-                                    </div>
-                                    <div class="med-pt-row" data-i="1">
-                                        <span class="med-pt-lbl">P2</span>
-                                        <input type="number" placeholder="X (m)" step="0.01">
-                                        <input type="number" placeholder="Y (m)" step="0.01">
-                                    </div>
-                                    <div class="med-pt-row" data-i="2">
-                                        <span class="med-pt-lbl">P3</span>
-                                        <input type="number" placeholder="X (m)" step="0.01">
-                                        <input type="number" placeholder="Y (m)" step="0.01">
-                                        <button class="med-pt-del" onclick="mdRemovePt(this)">✕</button>
-                                    </div>
-                                </div>
-
-                                <button class="med-add-pt" onclick="mdAddPt()">+ Adicionar ponto</button>
-
-                                <button class="med-btn" onclick="mdCalcPerim()">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Calcular perímetro
-                                </button>
-                                <button class="med-btn-sec" onclick="mdLimparPts()">Limpar pontos</button>
-
-                                <div class="med-result" id="md-p-res">
-                                    <div class="med-result-main">
-                                        <div class="med-result-lbl">Perímetro total</div>
-                                        <div class="med-result-val">
-                                            <span id="md-p-val">0.00</span>
-                                            <span class="med-result-unit">m</span>
-                                        </div>
-                                    </div>
-                                    <div class="med-grid">
-                                        <div class="med-mini"><div class="med-mini-lbl">Área aprox.</div><div class="med-mini-val" id="md-p-area">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Nº de pontos</div><div class="med-mini-val" id="md-p-pts">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Cabo +10%</div><div class="med-mini-val" id="md-p-cabo">—</div></div>
-                                        <div class="med-mini"><div class="med-mini-lbl">Cabo +20%</div><div class="med-mini-val" id="md-p-cabo2">—</div></div>
-                                    </div>
-                                    <div id="md-p-lados" style="margin-top:10px;padding-top:10px;border-top:1px solid #1e293b;font-size:11px;color:#475569;line-height:1.9;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div><!-- /medidas-section -->
+                    <!-- calculadora movida para modal -->
 
 </div>
                 </div>
@@ -1853,163 +1741,6 @@
             applyConfigToUI();
             toggleSettings();
         }
-
-        // ════════════════════════════════
-        // CALCULADORA DE MEDIDAS
-        // ════════════════════════════════
-        function abrirMeasure() {
-            window.location.href = 'measure://';
-            setTimeout(function() {
-                alert('Como usar:\n\n1. Abra o app Measure da Apple\n2. Aponte a câmera para o local\n3. Toque para marcar os pontos\n4. Volte aqui e digite os valores');
-            }, 800);
-        }
-
-        function medAba(n) {
-            document.querySelectorAll('.med-tab').forEach(function(t,i){ t.classList.toggle('on', i===n); });
-            document.querySelectorAll('.med-panel').forEach(function(p,i){ p.classList.toggle('on', i===n); });
-        }
-
-        function abrirMedidas() {
-            // Esconder tudo exceto a calculadora
-            var inputSec = document.getElementById('input-section');
-            var resultSec = document.getElementById('results-section');
-            var calcBtn = document.getElementById('calc-btn-wrap');
-            var p5 = document.querySelector('.p-5.pt-6');
-            if (inputSec)  inputSec.style.display  = 'none';
-            if (resultSec) { resultSec.classList.add('hidden'); resultSec.style.display = 'none'; }
-            if (calcBtn)   calcBtn.style.display   = 'none';
-            if (p5)        p5.style.display        = 'none';
-            // Mostrar calculadora
-            var med = document.getElementById('medidas-section');
-            if (med) {
-                med.classList.add('active');
-                med.style.display = 'block';
-                med.style.padding = '20px 20px 40px';
-            }
-            window.scrollTo(0, 0);
-        }
-
-        function fecharMedidas() {
-            // Restaurar tudo
-            var inputSec = document.getElementById('input-section');
-            var resultSec = document.getElementById('results-section');
-            var calcBtn = document.getElementById('calc-btn-wrap');
-            var p5 = document.querySelector('.p-5.pt-6');
-            if (inputSec)  inputSec.style.display  = '';
-            if (resultSec) { resultSec.style.display = ''; }
-            if (calcBtn)   calcBtn.style.display   = '';
-            if (p5)        p5.style.display        = '';
-            // Esconder calculadora
-            var med = document.getElementById('medidas-section');
-            if (med) {
-                med.classList.remove('active');
-                med.style.display = 'none';
-            }
-        }
-
-        function mdCalcDist() {
-            var ax=parseFloat(document.getElementById('md-ax').value)||0;
-            var ay=parseFloat(document.getElementById('md-ay').value)||0;
-            var bx=parseFloat(document.getElementById('md-bx').value)||0;
-            var by=parseFloat(document.getElementById('md-by').value)||0;
-            var dx=bx-ax; var dy=by-ay;
-            var d=Math.sqrt(dx*dx+dy*dy);
-            document.getElementById('md-d-val').textContent=d.toFixed(2);
-            document.getElementById('md-d-dx').textContent=Math.abs(dx).toFixed(2)+' m';
-            document.getElementById('md-d-dy').textContent=Math.abs(dy).toFixed(2)+' m';
-            document.getElementById('md-d-cm').textContent=(d*100).toFixed(0)+' cm';
-            document.getElementById('md-d-mm').textContent=(d*1000).toFixed(0)+' mm';
-            document.getElementById('md-d-res').classList.add('show');
-        }
-
-        function mdCalcArea() {
-            var c=parseFloat(document.getElementById('md-comp').value);
-            var l=parseFloat(document.getElementById('md-larg').value);
-            if(!c||!l)return;
-            var area=c*l;
-            var perim=2*(c+l);
-            var diag=Math.sqrt(c*c+l*l);
-            var tipo=area<6?'Banheiro':area<12?'Quarto peq.':area<20?'Quarto med.':area<30?'Sala média':'Sala grande';
-            document.getElementById('md-a-val').textContent=area.toFixed(2);
-            document.getElementById('md-a-per').textContent=perim.toFixed(2)+' m';
-            document.getElementById('md-a-diag').textContent=diag.toFixed(2)+' m';
-            document.getElementById('md-a-cm2').textContent=(area*10000).toFixed(0)+' cm²';
-            document.getElementById('md-a-tipo').textContent=tipo;
-            document.getElementById('md-a-res').classList.add('show');
-        }
-
-        var _mdPtCount=3;
-        function mdAddPt(){
-            _mdPtCount++;
-            var c=document.getElementById('md-pts');
-            var row=document.createElement('div');
-            row.className='med-pt-row';
-            row.innerHTML='<span class="med-pt-lbl">P'+_mdPtCount+'</span>'+
-                '<input type="number" placeholder="X (m)" step="0.01">'+
-                '<input type="number" placeholder="Y (m)" step="0.01">'+
-                '<button class="med-pt-del" onclick="mdRemovePt(this)">✕</button>';
-            c.appendChild(row);
-        }
-
-        function mdRemovePt(btn){
-            var rows=document.querySelectorAll('#md-pts .med-pt-row');
-            if(rows.length<=3)return;
-            btn.parentElement.remove();
-            document.querySelectorAll('#md-pts .med-pt-row').forEach(function(r,i){
-                r.querySelector('.med-pt-lbl').textContent='P'+(i+1);
-            });
-        }
-
-        function mdCalcPerim(){
-            var rows=document.querySelectorAll('#md-pts .med-pt-row');
-            var pts=[];
-            rows.forEach(function(r){
-                var ins=r.querySelectorAll('input');
-                var x=parseFloat(ins[0].value);
-                var y=parseFloat(ins[1].value);
-                if(!isNaN(x)&&!isNaN(y))pts.push({x:x,y:y});
-            });
-            if(pts.length<2)return;
-            var perim=0; var lados=[];
-            for(var i=0;i<pts.length;i++){
-                var j=(i+1)%pts.length;
-                var dx=pts[j].x-pts[i].x;
-                var dy=pts[j].y-pts[i].y;
-                var d=Math.sqrt(dx*dx+dy*dy);
-                perim+=d;
-                lados.push('P'+(i+1)+'→P'+(j+1)+': '+d.toFixed(2)+'m');
-            }
-            var area=0;
-            for(var i=0;i<pts.length;i++){
-                var j=(i+1)%pts.length;
-                area+=pts[i].x*pts[j].y-pts[j].x*pts[i].y;
-            }
-            area=Math.abs(area)/2;
-            document.getElementById('md-p-val').textContent=perim.toFixed(2);
-            document.getElementById('md-p-area').textContent=area.toFixed(2)+' m²';
-            document.getElementById('md-p-pts').textContent=pts.length;
-            document.getElementById('md-p-cabo').textContent=(perim*1.1).toFixed(1)+' m';
-            document.getElementById('md-p-cabo2').textContent=(perim*1.2).toFixed(1)+' m';
-            document.getElementById('md-p-lados').innerHTML='<b style="color:#64748b;">Lados: </b>'+lados.join(' · ');
-            document.getElementById('md-p-res').classList.add('show');
-        }
-
-        function mdLimpar(t){
-            if(t==='d'){
-                ['md-ax','md-ay','md-bx','md-by'].forEach(function(id){document.getElementById(id).value='';});
-                document.getElementById('md-d-res').classList.remove('show');
-            } else {
-                ['md-comp','md-larg'].forEach(function(id){document.getElementById(id).value='';});
-                document.getElementById('md-a-res').classList.remove('show');
-            }
-        }
-
-        function mdLimparPts(){
-            document.querySelectorAll('#md-pts input').forEach(function(i){i.value='';});
-            document.getElementById('md-p-res').classList.remove('show');
-        }
-
-
         // ════════════════════════════════════════════
         // MODO ESCURO / CLARO
         // ════════════════════════════════════════════
@@ -2187,6 +1918,131 @@
             }
         });
 
+
+        // ══ CALCULADORA MODAL ══
+        function abrirMedidas() {
+            var m = document.getElementById('calc-modal');
+            if (m) {
+                m.style.display = 'block';
+                window.scrollTo(0,0);
+                // Inicializar pontos se vazio
+                if (!document.getElementById('cpts').children.length) {
+                    calcAddPt(); calcAddPt(); calcAddPt();
+                }
+            }
+        }
+
+        function fecharMedidas() {
+            var m = document.getElementById('calc-modal');
+            if (m) m.style.display = 'none';
+        }
+
+        function calcAba(n) {
+            document.querySelectorAll('.calc-tab').forEach(function(t,i){ t.classList.toggle('on', i===n); });
+            document.querySelectorAll('.calc-panel').forEach(function(p,i){ p.style.display = i===n ? 'block' : 'none'; });
+        }
+
+        function calcDist() {
+            var ax=parseFloat(document.getElementById('c-ax').value)||0;
+            var ay=parseFloat(document.getElementById('c-ay').value)||0;
+            var bx=parseFloat(document.getElementById('c-bx').value)||0;
+            var by=parseFloat(document.getElementById('c-by').value)||0;
+            var dx=bx-ax; var dy=by-ay;
+            var d=Math.sqrt(dx*dx+dy*dy);
+            document.getElementById('cr-d-val').textContent = d.toFixed(2);
+            document.getElementById('cr-d-dx').textContent  = Math.abs(dx).toFixed(2)+' m';
+            document.getElementById('cr-d-dy').textContent  = Math.abs(dy).toFixed(2)+' m';
+            document.getElementById('cr-d-cm').textContent  = (d*100).toFixed(0)+' cm';
+            document.getElementById('cr-d-mm').textContent  = (d*1000).toFixed(0)+' mm';
+            document.getElementById('cr-d').style.display   = 'block';
+        }
+
+        function calcArea() {
+            var c=parseFloat(document.getElementById('c-comp').value);
+            var l=parseFloat(document.getElementById('c-larg').value);
+            if(!c||!l) return;
+            var area=c*l, perim=2*(c+l), diag=Math.sqrt(c*c+l*l);
+            var tipo=area<6?'Banheiro':area<12?'Quarto peq.':area<20?'Quarto med.':area<30?'Sala média':'Sala grande';
+            document.getElementById('cr-a-val').textContent  = area.toFixed(2);
+            document.getElementById('cr-a-per').textContent  = perim.toFixed(2)+' m';
+            document.getElementById('cr-a-diag').textContent = diag.toFixed(2)+' m';
+            document.getElementById('cr-a-cm2').textContent  = (area*10000).toFixed(0)+' cm²';
+            document.getElementById('cr-a-tipo').textContent = tipo;
+            document.getElementById('cr-a').style.display    = 'block';
+        }
+
+        var _cptCount = 0;
+        function calcAddPt() {
+            _cptCount++;
+            var c = document.getElementById('cpts');
+            var row = document.createElement('div');
+            row.className = 'cpt-row';
+            row.innerHTML =
+                '<span class="cpt-lbl">P'+_cptCount+'</span>'+
+                '<input type="number" placeholder="X (m)" step="0.01">'+
+                '<input type="number" placeholder="Y (m)" step="0.01">'+
+                (_cptCount > 3 ? '<button class="cpt-del" onclick="calcDelPt(this)">✕</button>' : '<span style="width:26px"></span>');
+            c.appendChild(row);
+        }
+
+        function calcDelPt(btn) {
+            btn.parentElement.remove();
+            var rows = document.querySelectorAll('#cpts .cpt-row');
+            rows.forEach(function(r,i){ r.querySelector('.cpt-lbl').textContent = 'P'+(i+1); });
+        }
+
+        function calcPerim() {
+            var rows = document.querySelectorAll('#cpts .cpt-row');
+            var pts = [];
+            rows.forEach(function(r){
+                var ins = r.querySelectorAll('input');
+                var x=parseFloat(ins[0].value), y=parseFloat(ins[1].value);
+                if(!isNaN(x)&&!isNaN(y)) pts.push({x:x,y:y});
+            });
+            if(pts.length<2) return;
+            var perim=0, lados=[];
+            for(var i=0;i<pts.length;i++){
+                var j=(i+1)%pts.length;
+                var d=Math.sqrt(Math.pow(pts[j].x-pts[i].x,2)+Math.pow(pts[j].y-pts[i].y,2));
+                perim+=d; lados.push('P'+(i+1)+'→P'+(j+1)+': '+d.toFixed(2)+'m');
+            }
+            var area=0;
+            for(var i=0;i<pts.length;i++){
+                var j=(i+1)%pts.length;
+                area+=pts[i].x*pts[j].y - pts[j].x*pts[i].y;
+            }
+            area=Math.abs(area)/2;
+            document.getElementById('cr-p-val').textContent   = perim.toFixed(2);
+            document.getElementById('cr-p-area').textContent  = area.toFixed(2)+' m²';
+            document.getElementById('cr-p-pts').textContent   = pts.length;
+            document.getElementById('cr-p-cabo').textContent  = (perim*1.1).toFixed(1)+' m';
+            document.getElementById('cr-p-cabo2').textContent = (perim*1.2).toFixed(1)+' m';
+            document.getElementById('cr-p-lados').innerHTML   = '<b style="color:#64748b">Lados: </b>'+lados.join(' · ');
+            document.getElementById('cr-p').style.display     = 'block';
+        }
+
+        function calcLimpar(t) {
+            if(t==='d'){
+                ['c-ax','c-ay','c-bx','c-by'].forEach(function(id){document.getElementById(id).value='';});
+                document.getElementById('cr-d').style.display='none';
+            } else {
+                ['c-comp','c-larg'].forEach(function(id){document.getElementById(id).value='';});
+                document.getElementById('cr-a').style.display='none';
+            }
+        }
+
+        function calcLimparPts() {
+            document.querySelectorAll('#cpts input').forEach(function(i){i.value='';});
+            document.getElementById('cr-p').style.display='none';
+        }
+
+        function abrirMeasure() {
+            window.location.href = 'measure://';
+            setTimeout(function(){
+                if(confirm('Como usar o Measure da Apple:\n\n1. Abra o app Measure\n2. Aponte a câmera para o local\n3. Toque para marcar pontos\n4. Volte aqui e digite os valores medidos\n\nToque OK para continuar.')){}
+            }, 800);
+        }
+
     </script>
 
     <!-- ══ MODAL INFORMAÇÕES DO SISTEMA ══ -->
@@ -2303,6 +2159,111 @@
           <strong style="color:#f97316;">Eletricista Power v2.0</strong>
         </div>
       </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════
+         CALCULADORA DE MEDIDAS — MODAL FIXO
+    ══════════════════════════════════════ -->
+    <div id="calc-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:#f8fafc;overflow-y:auto;-webkit-overflow-scrolling:touch;max-width:430px;margin:0 auto;">
+
+        <!-- TOPBAR FIXA -->
+        <div style="position:sticky;top:0;z-index:2;background:#0f172a;padding:16px 16px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,.3);">
+            <button onclick="fecharMedidas()" style="background:rgba(255,255,255,.1);border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                ← Voltar
+            </button>
+            <div style="flex:1;">
+                <div style="font-size:15px;font-weight:700;color:#fff;">Calculadora de Medidas</div>
+                <div style="font-size:11px;color:#94a3b8;">Distância · Área · Perímetro</div>
+            </div>
+            <button onclick="fecharMedidas()" style="width:34px;height:34px;border-radius:50%;background:#ef4444;border:none;color:#fff;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✕</button>
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div style="padding:16px 16px 60px;">
+
+            <!-- BOTÃO MEASURE -->
+            <button onclick="abrirMeasure()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:#fff7ed;border:1.5px solid #fed7aa;border-radius:12px;font-size:12px;font-weight:700;color:#ea580c;cursor:pointer;margin-bottom:14px;">
+                📏 Abrir app Measure da Apple (LiDAR)
+            </button>
+
+            <!-- ABAS -->
+            <div style="display:flex;gap:6px;margin-bottom:14px;">
+                <button class="calc-tab on" onclick="calcAba(0)" id="ctab0">📏 Distância</button>
+                <button class="calc-tab" onclick="calcAba(1)" id="ctab1">⬜ Área</button>
+                <button class="calc-tab" onclick="calcAba(2)" id="ctab2">🔲 Perímetro</button>
+            </div>
+
+            <!-- PAINEL DISTÂNCIA -->
+            <div id="cpanel0" class="calc-panel">
+                <div class="calc-card">
+                    <div class="calc-card-title">Distância entre dois pontos</div>
+                    <p class="calc-tip">Meça com o app Measure e digite as coordenadas X e Y de cada ponto.</p>
+                    <div class="calc-row"><span class="calc-lbl">Ponto A — X</span><input type="number" id="c-ax" placeholder="0.00" step="0.01"><span class="calc-unit">m</span></div>
+                    <div class="calc-row"><span class="calc-lbl">Ponto A — Y</span><input type="number" id="c-ay" placeholder="0.00" step="0.01"><span class="calc-unit">m</span></div>
+                    <div class="calc-row"><span class="calc-lbl">Ponto B — X</span><input type="number" id="c-bx" placeholder="0.00" step="0.01"><span class="calc-unit">m</span></div>
+                    <div class="calc-row"><span class="calc-lbl">Ponto B — Y</span><input type="number" id="c-by" placeholder="0.00" step="0.01"><span class="calc-unit">m</span></div>
+                    <button class="calc-btn blue" onclick="calcDist()">Calcular distância</button>
+                    <button class="calc-btn-sec" onclick="calcLimpar('d')">Limpar</button>
+                    <div class="calc-result" id="cr-d">
+                        <div class="calc-result-lbl">Distância A → B</div>
+                        <div class="calc-result-val"><span id="cr-d-val">0.00</span> <span class="calc-result-unit">m</span></div>
+                        <div class="calc-grid">
+                            <div><div class="calc-mini-lbl">Diferença X</div><div class="calc-mini-val" id="cr-d-dx">—</div></div>
+                            <div><div class="calc-mini-lbl">Diferença Y</div><div class="calc-mini-val" id="cr-d-dy">—</div></div>
+                            <div><div class="calc-mini-lbl">Em cm</div><div class="calc-mini-val" id="cr-d-cm">—</div></div>
+                            <div><div class="calc-mini-lbl">Em mm</div><div class="calc-mini-val" id="cr-d-mm">—</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAINEL ÁREA -->
+            <div id="cpanel1" class="calc-panel" style="display:none;">
+                <div class="calc-card">
+                    <div class="calc-card-title">Área retangular / quadrada</div>
+                    <p class="calc-tip">Meça comprimento e largura com o app Measure e digite abaixo.</p>
+                    <div class="calc-row"><span class="calc-lbl">Comprimento</span><input type="number" id="c-comp" placeholder="0.00" step="0.01"><span class="calc-unit">m</span></div>
+                    <div class="calc-row"><span class="calc-lbl">Largura</span><input type="number" id="c-larg" placeholder="0.00" step="0.01"><span class="calc-unit">m</span></div>
+                    <button class="calc-btn green" onclick="calcArea()">Calcular área</button>
+                    <button class="calc-btn-sec" onclick="calcLimpar('a')">Limpar</button>
+                    <div class="calc-result" id="cr-a">
+                        <div class="calc-result-lbl">Área total</div>
+                        <div class="calc-result-val"><span id="cr-a-val">0.00</span> <span class="calc-result-unit">m²</span></div>
+                        <div class="calc-grid">
+                            <div><div class="calc-mini-lbl">Perímetro</div><div class="calc-mini-val" id="cr-a-per">—</div></div>
+                            <div><div class="calc-mini-lbl">Diagonal</div><div class="calc-mini-val" id="cr-a-diag">—</div></div>
+                            <div><div class="calc-mini-lbl">Em cm²</div><div class="calc-mini-val" id="cr-a-cm2">—</div></div>
+                            <div><div class="calc-mini-lbl">Cômodo</div><div class="calc-mini-val" id="cr-a-tipo">—</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAINEL PERÍMETRO -->
+            <div id="cpanel2" class="calc-panel" style="display:none;">
+                <div class="calc-card">
+                    <div class="calc-card-title">Perímetro por pontos</div>
+                    <p class="calc-tip">Adicione cada ponto medido em ordem ao redor do cômodo.</p>
+                    <div id="cpts" style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px;"></div>
+                    <button onclick="calcAddPt()" style="width:100%;padding:9px;border-radius:10px;background:transparent;border:1.5px dashed #cbd5e1;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;margin-bottom:10px;">+ Adicionar ponto</button>
+                    <button class="calc-btn blue" onclick="calcPerim()">Calcular perímetro</button>
+                    <button class="calc-btn-sec" onclick="calcLimparPts()">Limpar pontos</button>
+                    <div class="calc-result" id="cr-p">
+                        <div class="calc-result-lbl">Perímetro total</div>
+                        <div class="calc-result-val"><span id="cr-p-val">0.00</span> <span class="calc-result-unit">m</span></div>
+                        <div class="calc-grid">
+                            <div><div class="calc-mini-lbl">Área aprox.</div><div class="calc-mini-val" id="cr-p-area">—</div></div>
+                            <div><div class="calc-mini-lbl">Pontos</div><div class="calc-mini-val" id="cr-p-pts">—</div></div>
+                            <div><div class="calc-mini-lbl">Cabo +10%</div><div class="calc-mini-val" id="cr-p-cabo">—</div></div>
+                            <div><div class="calc-mini-lbl">Cabo +20%</div><div class="calc-mini-val" id="cr-p-cabo2">—</div></div>
+                        </div>
+                        <div id="cr-p-lados" style="margin-top:8px;padding-top:8px;border-top:1px solid #1e293b;font-size:11px;color:#64748b;line-height:1.8;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </body>
